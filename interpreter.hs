@@ -5,7 +5,7 @@ type ID = String
 type Endereco = Double
 type Nome = String
 
-data Valor = String | Double | Lambda ID Valor | Aplicar Valor Valor
+data Valor = VString | VDouble | Lambda ID Valor | VAplicar Valor Valor | VBool Bool
 
 data Termo = Var ID
            | LitNum Double
@@ -39,8 +39,8 @@ type Estado = [Definicao]
 atualiza x v [] = [(x,v)]
 atualiza variavel valor ((nome, valor_estado) : resto) = if nome == variavel then (nome,valor):resto else (nome,valor_estado) : atualiza variavel valor resto
 
-inHeap variavel ((nome, objeto) : resto) = if nome == variavel then true else inHeap variavel resto
-inHeap variavel [] = false
+inHeap variavel ((nome, objeto) : resto) = if nome == variavel then True else inHeap variavel resto
+inHeap variavel [] = False
 
 getEstado variavel ((nome, valor) : resto) = if nome == variavel then (if(inHeap valor) then (getHeap valor) else valor) else getEstado variavel resto
 getEstado variavel [] = None
@@ -51,6 +51,7 @@ getHeap variavel ((nome, objeto) : resto) = if nome == variavel then objeto else
 isTrue :: Valor -> Bool
 isTrue (VBool True) = True
 isTrue _ = False
+
 
 eval estado (LitNum n) = (VNum n, estado)
 eval estado (LitBool b) = (VBool b, estado)
