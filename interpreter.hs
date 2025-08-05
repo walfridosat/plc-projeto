@@ -43,8 +43,12 @@ atualiza variavel valor ((nome, valor_estado) : resto) = if nome == variavel the
 inHeap variavel ((nome, objeto) : resto) = if nome == variavel then True else inHeap variavel resto
 inHeap variavel [] = False
 
-getEstado variavel ((nome, valor) : resto) = if nome == variavel then (if(inHeap valor) then (getHeap valor) else valor) else getEstado variavel resto
-getEstado variavel [] = None
+getEstado :: ID -> Estado -> Valor
+getEstado _ [] = VNum 0
+getEstado variavel ((nome, valor):resto)
+  | variavel == nome = valor
+  | otherwise        = getEstado variavel resto
+  
 getHeap variavel ((nome, objeto) : resto) = if nome == variavel then objeto else getHeap variavel resto
 
 
