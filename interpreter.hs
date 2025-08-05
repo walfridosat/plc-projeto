@@ -5,7 +5,12 @@ type ID = String
 type Endereco = Double
 type Nome = String
 
-data Valor = VString String | VNum Double | Lambda ID Termo | VAplicar Valor Valor | VBool Bool
+data Valor = VString String
+            | VNum Double 
+            | Lambda ID Termo 
+            | VAplicar Valor Valor 
+            | VBool Bool
+            deriving Show
 
 data Termo = Var ID
            | LitNum Double
@@ -22,6 +27,7 @@ data Termo = Var ID
            | Maior Termo Termo
            | Igual Termo Termo
            | Menor Termo Termo
+           deriving Show
 
 type Definicao = (ID,Valor)
 
