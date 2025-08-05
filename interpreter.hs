@@ -27,9 +27,7 @@ type Definicao = (ID,Valor)
 
 type Classe = (Nome, [(ID, Termo)], [(ID, Termo)]) 
 
-type Objeto = Classe | Valor
-
-type None = 0
+data Objeto = ObjClasse Classe | ObjValor Valor
 
 type Programa = [Definicao]
 
