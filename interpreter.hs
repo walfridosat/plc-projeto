@@ -88,3 +88,8 @@ eval estado (Igual t u) =
     (VBool b1, VBool b2) -> (VBool (b1==b2), e2)
     (VString s1, VString s2) -> (VBool (s1==s2), e2)
 
+avaliarLinhas::Estado -> [Termo] -> Estado
+avaliarLinhas estado [] = estado
+avaliarLinhas estado (linha:resto) =
+  let (_, novoEstado) = eval estado linha
+  in avaliarLinhas novoEstado resto
