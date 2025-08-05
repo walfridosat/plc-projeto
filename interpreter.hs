@@ -5,7 +5,7 @@ type ID = String
 type Endereco = Double
 type Nome = String
 
-data Valor = VString | VDouble | Lambda ID Valor | VAplicar Valor Valor | VBool Bool
+data Valor = VString String | VNum Double | Lambda ID Termo | VAplicar Valor Valor | VBool Bool
 
 data Termo = Var ID
            | LitNum Double
@@ -18,7 +18,7 @@ data Termo = Var ID
            | Atr ID Termo
            | Seq Termo Termo           
            | New Nome
-           | For Termo Termo Termo Termo --- inicio, condicao, pos, corpo
+           | For Termo Termo Termo [Termo] --- inicio, condicao, pos, corpo
 
 type Definicao = (ID,Valor)
 
@@ -50,7 +50,9 @@ getHeap variavel ((nome, objeto) : resto) = if nome == variavel then objeto else
 
 isTrue :: Valor -> Bool
 isTrue (VBool True) = True
-isTrue _ = False
+isTrue (VBool False) = False
+isTrue (VNum n) = (n>0)
+
 
 
 eval estado (LitNum n) = (VNum n, estado)
@@ -93,3 +95,5 @@ avaliarLinhas estado [] = estado
 avaliarLinhas estado (linha:resto) =
   let (_, novoEstado) = eval estado linha
   in avaliarLinhas novoEstado resto
+
+eval estado (For inicio, condicao, )
