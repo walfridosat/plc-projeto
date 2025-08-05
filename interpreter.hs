@@ -19,6 +19,9 @@ data Termo = Var ID
            | Seq Termo Termo           
            | New Nome
            | For Termo Termo Termo [Termo] --- inicio, condicao, pos, corpo
+           | Maior Termo Termo
+           | Igual Termo Termo
+           | Menor Termo Termo
 
 type Definicao = (ID,Valor)
 
@@ -46,13 +49,14 @@ getEstado variavel ((nome, valor) : resto) = if nome == variavel then (if(inHeap
 getEstado variavel [] = None
 getHeap variavel ((nome, objeto) : resto) = if nome == variavel then objeto else getHeap variavel resto
 
+
+
 -- eval dito
 
 isTrue :: Valor -> Bool
 isTrue (VBool True) = True
 isTrue (VBool False) = False
 isTrue (VNum n) = (n>0)
-
 
 
 eval estado (LitNum n) = (VNum n, estado)
@@ -96,4 +100,7 @@ avaliarLinhas estado (linha:resto) =
   let (_, novoEstado) = eval estado linha
   in avaliarLinhas novoEstado resto
 
-eval estado (For inicio, condicao, )
+
+
+
+  
