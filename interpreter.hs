@@ -53,7 +53,7 @@ type Estado = [Definicao]
 
 atualiza :: Eq t1 => t1 -> t2 -> [(t1, t2)] -> [(t1, t2)]
 atualiza x v [] = [(x,v)]
-atualiza variavel valor ((nome, valor_eswtado) : resto) = if nome == variavel then (nome,valor) : resto else (nome,valor_estado) : atualiza variavel valor resto
+atualiza variavel valor ((nome, valor_estado) : resto) = if nome == variavel then (nome,valor) : resto else (nome,valor_estado) : atualiza variavel valor resto
 
 inHeap :: Eq t => t -> [(t, b)] -> Bool
 inHeap variavel ((nome, objeto) : resto) = (nome == variavel) || inHeap variavel resto
@@ -89,7 +89,6 @@ eval estado (Atr x t) =
       estado2 = atualiza x v estado1
   in (v, estado2)
 
-
 -- comparacões Menor, Maior, Igual
 eval estado (Menor t u) =
   let (v1, e1) = eval estado t
@@ -118,12 +117,29 @@ eval estado (Som t u) =
   in case (v1, v2) of
     (VNum x, VNum y) -> (VNum (x + y), e2)
 
+-- Função lambda
+
+eval estado (Lam x t) = (Lambda x t, estado)
+
+-- Função de aplicação
+
+eval estado (Apl t u) =
+  let (v1, e1) = eval estado t
+      (v2, e2) = eval e1 u 
+  in case v1 of 
+    Lambda x corpo -> 
+      let e_n = atualiza x v2 e2
+          (resultado, _) = eval e_n corpo
+      in (resultado, e2)  
+    _ -> error "error: not a function"
+
+-- Avaliação condicional
+
 avaliarLinhas::Estado -> [Termo] -> Estado
 avaliarLinhas estado [] = estado
 avaliarLinhas estado (linha:resto) =
   let (_, novoEstado) = eval estado linha
   in avaliarLinhas novoEstado resto
-
 
 
 
